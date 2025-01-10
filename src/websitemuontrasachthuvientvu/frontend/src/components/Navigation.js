@@ -1,38 +1,53 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
-import { AiFillHome, AiOutlineBarChart } from "react-icons/ai"; // Import icon từ react-icons
+import { useLocation, useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHome, faChartBar, faBook } from "@fortawesome/free-solid-svg-icons"; // Import FontAwesome icons
 
 const Navigation = () => {
-  const location = useLocation(); // Lấy đường dẫn hiện tại để xác định nút đang active.
+  const location = useLocation();
+  const navigate = useNavigate();
 
   return (
     <nav className="bg-gray-100 border-b shadow-lg">
       <div className="container mx-auto flex justify-center p-4 space-x-6">
-        {/* Nút Home */}
-        <Link
-          to="/"
-          className={`flex items-center px-6 py-4 text-lg font-semibold rounded-2xl ${
+        {/* Home Button */}
+        <button
+          onClick={() => navigate("/")}
+          className={`px-8 py-4 font-semibold transition-all duration-300 border-2 ${
             location.pathname === "/"
-              ? "bg-blue-500 text-white shadow-md"
-              : "bg-white text-blue-500 border border-blue-500"
-          } hover:bg-blue-600 hover:text-white transition duration-300`}
+              ? "bg-gradient-to-r from-blue-400 to-blue-300 text-white shadow-md scale-105"
+              : "bg-white text-gray-700 hover:bg-gradient-to-r hover:from-blue-100 hover:to-blue-50 hover:text-black border-gray-200 shadow hover:scale-110"
+          } rounded-2xl flex items-center`}
         >
-          <AiFillHome className="mr-2 text-2xl" /> {/* Icon Home */}
+          <FontAwesomeIcon icon={faHome} className="mr-3 text-2xl" /> {/* Home Icon */}
           Home
-        </Link>
+        </button>
 
-        {/* Nút Dashboard */}
-        <Link
-          to="/dashboard"
-          className={`flex items-center px-6 py-4 text-lg font-semibold rounded-2xl ${
+        {/* Dashboard Button */}
+        <button
+          onClick={() => navigate("/dashboard")}
+          className={`px-8 py-4 font-semibold transition-all duration-300 border-2 ${
             location.pathname === "/dashboard"
-              ? "bg-blue-500 text-white shadow-md"
-              : "bg-white text-blue-500 border border-blue-500"
-          } hover:bg-blue-600 hover:text-white transition duration-300`}
+              ? "bg-gradient-to-r from-blue-400 to-blue-300 text-white shadow-md scale-105"
+              : "bg-white text-gray-700 hover:bg-gradient-to-r hover:from-blue-100 hover:to-blue-50 hover:text-black border-gray-200 shadow hover:scale-110"
+          } rounded-2xl flex items-center`}
         >
-          <AiOutlineBarChart className="mr-2 text-2xl" /> {/* Icon Dashboard */}
+          <FontAwesomeIcon icon={faChartBar} className="mr-3 text-2xl" /> {/* Dashboard Icon */}
           Thống kê
-        </Link>
+        </button>
+
+        {/* Quy định Button */}
+        <button
+          onClick={() => navigate("/rules")}
+          className={`px-8 py-4 font-semibold transition-all duration-300 border-2 ${
+            location.pathname === "/rules"
+              ? "bg-gradient-to-r from-blue-400 to-blue-300 text-white shadow-md scale-105"
+              : "bg-white text-gray-700 hover:bg-gradient-to-r hover:from-blue-100 hover:to-blue-50 hover:text-black border-gray-200 shadow hover:scale-110"
+          } rounded-2xl flex items-center`}
+        >
+          <FontAwesomeIcon icon={faBook} className="mr-3 text-2xl" /> {/* Quy định Icon */}
+          Nội quy thư viện
+        </button>
       </div>
     </nav>
   );

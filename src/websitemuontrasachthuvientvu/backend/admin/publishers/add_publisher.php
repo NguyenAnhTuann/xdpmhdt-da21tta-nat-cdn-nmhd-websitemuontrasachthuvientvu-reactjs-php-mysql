@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $checkResult = $conn->query($checkQuery);
 
         if ($checkResult->num_rows > 0) {
-            echo json_encode(["success" => false, "message" => "Publisher name already exists"]);
+            echo json_encode(["success" => false, "message" => "NXB này đã tồn tại. Vui lòng chọn NXB khác!"]);
             exit;
         }
 

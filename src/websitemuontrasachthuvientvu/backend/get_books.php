@@ -34,7 +34,6 @@ if ($stmt) {
         $books = [];
 
         while ($row = $result->fetch_assoc()) {
-            // Kiểm tra nếu đường dẫn `image` là tương đối, bổ sung URL Cloudinary nếu cần
             if (!filter_var($row['image'], FILTER_VALIDATE_URL)) {
                 $cloudinary_base_url = "https://res.cloudinary.com/duk8odqun/image/upload/";
                 $row['image'] = $cloudinary_base_url . ltrim($row['image'], "/");

@@ -1,13 +1,32 @@
+import { faEdit, faPlus, faSync, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faEdit, faSync, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 const Categories = () => {
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const [notification, setNotification] = useState({ message: "", visible: false });
+    const [searchTerm, setSearchTerm] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+    const categoriesPerPage = 20;
+    const [categoryCount, setCategoryCount] = useState({});
+
+
+    const filteredCategories = categories.filter((category) =>
+        category.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    const indexOfLastCategory = currentPage * categoriesPerPage;
+    const indexOfFirstCategory = indexOfLastCategory - categoriesPerPage;
+    const currentCategories = filteredCategories.slice(indexOfFirstCategory, indexOfLastCategory);
+    const totalPages = Math.ceil(filteredCategories.length / categoriesPerPage);
+
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
+
 
     const showNotification = (message) => {
         setNotification({ message, visible: true });
@@ -22,19 +41,30 @@ const Categories = () => {
         name: "",
     });
 
-    // Fetch categories
     const fetchCategories = async () => {
         setLoading(true);
         try {
             const response = await fetch("http://localhost/websitemuontrasachthuvientvu/backend/admin/categories/categories.php");
             const result = await response.json();
             setCategories(result);
+
+            const booksResponse = await fetch("http://localhost/websitemuontrasachthuvientvu/backend/admin/books/books.php");
+            const books = await booksResponse.json();
+
+            const categoryCountObj = books.reduce((acc, book) => {
+                const categoryId = book.category_id;
+                acc[categoryId] = acc[categoryId] ? acc[categoryId] + 1 : 1;
+                return acc;
+            }, {});
+
+            setCategoryCount(categoryCountObj);
         } catch (error) {
             console.error("Error fetching categories:", error);
         } finally {
             setLoading(false);
         }
     };
+
 
     useEffect(() => {
         fetchCategories();
@@ -100,7 +130,7 @@ const Categories = () => {
     if (loading) return <p>Loading...</p>;
 
     return (
-        <div className="p-4 bg-gray-50 min-h-screen">
+        <div className="container mx-auto px-8 min-h-screen">
             {notification.visible && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                     <div className="bg-white rounded-xl shadow-xl w-[28rem] max-w-full">
@@ -136,17 +166,9 @@ const Categories = () => {
                     </div>
                 </div>
             )}
-
-            <div className="relative bg-gradient-to-r from-gray-100 to-white p-10 rounded-xl shadow-2xl">
-                {/* Tiêu đề */}
-                <h2 className="text-center text-6xl font-extrabold text-gray-800 tracking-wider uppercase mb-4">
-                    Quản Lý Thông Tin Thể loại sách
-                </h2>
-
-                {/* Đường viền dưới tiêu đề */}
-                <div className="w-40 h-2 bg-black mx-auto rounded-full"></div>
+            <div className="mt-4">
                 {/* Nút quay lại */}
-                <div className="absolute top-4 left-4">
+                <div className="flex justify-start mb-4">
                     <button
                         onClick={() => navigate("/admin")}
                         className="flex items-center bg-blue-600 text-white px-6 py-3 rounded-full shadow-lg hover:bg-blue-700 hover:shadow-xl transition-transform transform hover:scale-105 text-lg font-medium"
@@ -168,6 +190,12 @@ const Categories = () => {
                         Trở về Trang Quản Trị
                     </button>
                 </div>
+            </div>
+            <div className="relative p-10 rounded-xl mt-4 mb-8 border-2">
+                {/* Tiêu đề */}
+                <h2 className="text-center text-6xl font-extrabold text-gray-800 tracking-wider uppercase mb-4">
+                    Quản Lý Thông Tin Thể loại sách
+                </h2>
             </div>
 
             <div className="mb-8 p-8 bg-white shadow-2xl rounded-xl border border-gray-200">
@@ -267,13 +295,28 @@ const Categories = () => {
                 </div>
             </div>
 
+            <div className="mb-6 flex flex-wrap gap-6 items-center">
+                <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder="🔍 Tìm kiếm theo tên thể loại..."
+                    className="w-[400px] px-4 py-2 border rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 placeholder-gray-400 transition-all duration-300"
+                />
+                <button
+                    onClick={() => setSearchTerm("")}
+                    className="bg-gradient-to-r from-red-500 to-red-700 text-white px-6 py-3 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300"
+                >
+                    🔄 Đặt lại
+                </button>
+            </div>
 
             <div className="overflow-x-auto mt-6 bg-white shadow-lg rounded-lg p-4">
                 <table className="w-full border-collapse border border-gray-200">
                     {/* Header */}
                     <thead className="bg-gradient-to-r from-blue-600 to-blue-400 text-white">
                         <tr>
-                            {["ID", "Tên Thể Loại", "Thao tác"].map((header, index) => (
+                            {["ID", "Tên Thể Loại", "Tổng số sách", "Thao tác"].map((header, index) => (
                                 <th
                                     key={index}
                                     className="px-6 py-3 border-r border-blue-300 text-left text-sm font-semibold uppercase"
@@ -284,9 +327,8 @@ const Categories = () => {
                         </tr>
                     </thead>
 
-                    {/* Body */}
                     <tbody>
-                        {categories.map((category, index) => (
+                        {currentCategories.map((category, index) => (
                             <tr
                                 key={category.id}
                                 className={`transition-colors ${index % 2 === 0 ? "bg-gray-50" : "bg-white"
@@ -295,6 +337,9 @@ const Categories = () => {
                                 <td className="px-6 py-3 border-r border-gray-200">{category.id}</td>
                                 <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">
                                     {category.name}
+                                </td>
+                                <td className="px-6 py-3 border-r border-gray-200">
+                                    {categoryCount[category.id] || 0} {/* Hiển thị tổng số sách */}
                                 </td>
                                 <td className="px-6 py-3 border-r border-gray-200 flex space-x-2">
                                     {/* Nút Sửa */}
@@ -317,7 +362,27 @@ const Categories = () => {
                             </tr>
                         ))}
                     </tbody>
+
                 </table>
+                <div className="mt-8 flex justify-center items-center space-x-2">
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                        <button
+                            key={page}
+                            onClick={() => {
+                                handlePageChange(page);
+                                window.scrollTo({
+                                    top: 0,
+                                    behavior: 'smooth',
+                                });
+                            }}
+                            className={`px-4 py-2 rounded ${page === currentPage ? "border-2 rounded-2xl bg-red-500 text-white" : "hover:bg-gray-200 border-2 rounded-2xl"}`}
+                        >
+                            {page}
+                        </button>
+                    ))}
+                </div>
+
+
             </div>
 
         </div>

@@ -10,6 +10,11 @@ const BookDetail = () => {
     const { addToBorrowList } = useContext(BorrowContext);
 
     useEffect(() => {
+        window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: 'smooth'
+        });
         const fetchBookDetail = async () => {
             try {
                 const response = await fetch(
@@ -32,11 +37,18 @@ const BookDetail = () => {
         }
     };
 
+    const formatDateToDDMMYYYY = (date) => {
+        if (!date) return "Không xác định";
+        const [year, month, day] = date.split("-");
+        return `${day}/${month}/${year}`;
+    };
+
+
     return (
         <div
             className="p-10 min-h-screen flex items-center justify-center"
             style={{
-                backgroundImage: `url('https://res.cloudinary.com/duk8odqun/image/upload/v1735325448/1_x7mrol.jpg')`,
+                backgroundImage: `url('https://res.cloudinary.com/duk8odqun/image/upload/v1736540786/Logotimdothatlac_15_dynqps.png')`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
             }}
@@ -84,9 +96,10 @@ const BookDetail = () => {
                                     <span className="text-xl text-yellow-500">📅</span>
                                     <span>
                                         <strong className="font-semibold">Ngày xuất bản:</strong>{" "}
-                                        {book.publication_date}
+                                        {formatDateToDDMMYYYY(book.publication_date)}
                                     </span>
                                 </p>
+
                                 <p className="flex items-center gap-2">
                                     <span className="text-xl text-red-500">📄</span>
                                     <span>

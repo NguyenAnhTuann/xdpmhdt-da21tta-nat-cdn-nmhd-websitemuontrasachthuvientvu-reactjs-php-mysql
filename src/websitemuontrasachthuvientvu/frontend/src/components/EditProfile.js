@@ -26,6 +26,11 @@ const EditProfile = () => {
     });
 
     useEffect(() => {
+        window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: 'smooth'
+        });
         const userData = JSON.parse(localStorage.getItem("user"));
         if (userData) {
             setFormData((prevFormData) => ({
@@ -35,8 +40,8 @@ const EditProfile = () => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    
-    
+
+
 
     // Hàm xử lý thay đổi input
     const handleChange = (e) => {
@@ -78,13 +83,13 @@ const EditProfile = () => {
         <div
             className="min-h-screen flex items-center justify-center p-4"
             style={{
-                backgroundImage: `url('https://res.cloudinary.com/duk8odqun/image/upload/v1735325448/1_x7mrol.jpg')`,
+                backgroundImage: `url('https://res.cloudinary.com/duk8odqun/image/upload/v1736540786/Logotimdothatlac_15_dynqps.png')`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 backgroundRepeat: "no-repeat",
             }}
         >
-            
+
             {notification.show && (
                 <div
                     className={`fixed top-4 left-1/2 transform -translate-x-1/2 z-50 px-6 py-4 rounded-md shadow-md text-white ${notification.type === "success" ? "bg-green-500" : "bg-red-500"
@@ -94,7 +99,7 @@ const EditProfile = () => {
                 </div>
             )}
 
-            <div className="bg-white bg-opacity-90 shadow-lg rounded-xl w-full max-w-2xl p-8 space-y-6">
+            <div className="bg-white bg-opacity-90 shadow-lg rounded-xl w-full max-w-2xl p-8 space-y-6 border-4">
                 <div className="flex items-center justify-start w-full mb-4">
                     <button
                         onClick={() => navigate("/")}

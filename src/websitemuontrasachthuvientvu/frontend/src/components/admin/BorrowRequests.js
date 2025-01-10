@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { faCheckCircle, faHourglassStart, faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHourglassStart, faCheckCircle, faTimesCircle } from "@fortawesome/free-solid-svg-icons";
+import React, { useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 
 const BorrowRequests = () => {
@@ -130,7 +130,7 @@ const BorrowRequests = () => {
 
 
     return (
-        <div className="p-8 bg-gray-100 min-h-screen">
+        <div className="container mx-auto px-8 min-h-screen">
             {notification.visible && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                     <div className="bg-white rounded-xl shadow-xl w-[28rem] max-w-full">
@@ -166,16 +166,9 @@ const BorrowRequests = () => {
                     </div>
                 </div>
             )}
-            <div className="relative bg-gradient-to-r from-gray-100 to-white p-10 rounded-xl shadow-2xl">
-                {/* Tiêu đề */}
-                <h2 className="text-center text-6xl font-extrabold text-gray-800 tracking-wider uppercase mb-4">
-                    Quản Lý danh sách đơn yêu cầu mượn
-                </h2>
-
-                {/* Đường viền dưới tiêu đề */}
-                <div className="w-40 h-2 bg-black mx-auto rounded-full"></div>
+            <div className="mt-4">
                 {/* Nút quay lại */}
-                <div className="absolute top-4 left-4">
+                <div className="flex justify-start mb-4">
                     <button
                         onClick={() => navigate("/admin")}
                         className="flex items-center bg-blue-600 text-white px-6 py-3 rounded-full shadow-lg hover:bg-blue-700 hover:shadow-xl transition-transform transform hover:scale-105 text-lg font-medium"
@@ -197,6 +190,12 @@ const BorrowRequests = () => {
                         Trở về Trang Quản Trị
                     </button>
                 </div>
+            </div>
+            <div className="relative p-10 rounded-xl mt-4 mb-8 border-2">
+                {/* Tiêu đề */}
+                <h2 className="text-center text-6xl font-extrabold text-gray-800 tracking-wider uppercase mb-4">
+                    Quản Lý danh sách đơn yêu cầu mượn
+                </h2>
             </div>
 
             <div className="mt-8 flex justify-center space-x-6">
@@ -342,8 +341,8 @@ const BorrowRequests = () => {
                                                     "ID sách",
                                                     "Hình ảnh",
                                                     "Tên sách",
-                                                    "Số lượng",
                                                     "Tác giả",
+                                                    "Số lượng",
                                                 ].map((header, index) => (
                                                     <th
                                                         key={index}
@@ -373,8 +372,8 @@ const BorrowRequests = () => {
                                                     <td className="border border-gray-300 px-4 py-2 text-center font-semibold">
                                                         {book.title}
                                                     </td>
-                                                    <td className="border border-gray-300 px-4 py-2 text-center">{book.quantity}</td>
                                                     <td className="border border-gray-300 px-4 py-2 text-center">{book.author}</td>
+                                                    <td className="border border-gray-300 px-4 py-2 text-center">{book.quantity}</td>
                                                 </tr>
                                             ))}
                                         </tbody>

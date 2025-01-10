@@ -4,7 +4,7 @@ const Footer = () => {
     return (
         <footer className="bg-white text-gray-700 py-8 px-6">
             {/* Phần mới thêm */}
-            <div className="bg-gray-400 text-white py-6">
+            <div className="bg-gray-400 text-white py-6 rounded-3xl">
                 <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 text-center">
                     {/* Logo và ứng dụng */}
                     <div className="flex flex-col items-center">
@@ -65,47 +65,34 @@ const Footer = () => {
                 <div>
                     <h3 className="text-2xl font-bold mb-4 text-gray-800 leading-relaxed">
                         SẢN PHẨM DEMO PHỤC VỤ ĐỒ ÁN KẾT THÚC MÔN{" "}
-                        {/* <br />
+                        <br />
                         <span className="text-gray-600">
                             PHÁT TRIỂN ỨNG DỤNG WEB MÃ NGUỒN MỞ
                         </span>
-                        <br/>
-                        <span className="text-gray-600">
-                            XÂY DỰNG PHẦN MỀM HƯỚNG ĐỐI TƯỢNG
-                        </span> */}
                     </h3>
 
-                    <p className="text-sm mb-4">
-                        <span className="font-semibold text-gray-800">
-                            Tên đề tài:
-                        </span>{" "}
-                        Xây dựng Hệ thống quản lí mượn trả sách thư viện TVU
-                    </p>
-                    {/* <p className="text-sm mb-4">
-                        <span className="font-semibold text-gray-800">
-                            Giáo viên hướng dẫn:
-                        </span>{" "}
-                        Phạm Thị Trúc Mai
-                    </p> */}
+                    <h4 className="text-lg font-semibold mb-2 whitespace-nowrap">Tên đề tài: Xây dựng Website quản lý mượn trả sách tại Trung tâm học liệu - Phát triển dạy và học</h4>
+                    <h4 className="text-lg font-semibold mb-2">Mã đề tài: 07</h4>
+                    <h4 className="text-lg font-semibold mb-2">Giáo viên hướng dẫn: Phạm Thị Trúc Mai</h4>
                     <h4 className="text-lg font-semibold mb-2">Thành viên thực hiện:</h4>
                     <ul className="space-y-3 text-sm leading-6">
                         <li className="flex items-center gap-3">
                             <span className="bg-gray-800 text-white px-3 py-1 rounded-full font-semibold shadow-md">
                                 1
                             </span>
-                            <span>Nguyễn Anh Tuấn - 110121123 - DA21TTA</span>
+                            <h4>Nguyễn Anh Tuấn - 110121123 - DA21TTA</h4>
                         </li>
                         <li className="flex items-center gap-3">
                             <span className="bg-gray-800 text-white px-3 py-1 rounded-full font-semibold shadow-md">
                                 2
                             </span>
-                            <span>Cao Duy Nhân - 110121070 - DA21TTA</span>
+                            <h4>Cao Duy Nhân - 110121070 - DA21TTA</h4>
                         </li>
                         <li className="flex items-center gap-3">
                             <span className="bg-gray-800 text-white px-3 py-1 rounded-full font-semibold shadow-md">
                                 3
                             </span>
-                            <span>Nguyễn Minh Hải Đăng - 110121181 - DA21TTA</span>
+                            <h4>Nguyễn Minh Hải Đăng - 110121181 - DA21TTA</h4>
                         </li>
                     </ul>
                 </div>
@@ -121,8 +108,8 @@ const Footer = () => {
             </div>
 
             {/* Dòng chữ bản quyền */}
-            <div className="text-center mt-8 text-xs text-gray-500 border-t border-gray-300 pt-4">
-                Copyright &copy; 2024 Thư Viện Sách TVU. Được phát triển bởi 3 thành viên của DA21TTA.
+            <div className="text-center mt-8 text-xs text-black border-t border-gray-300 pt-4">
+                Copyright &copy; 2024 Thư Viện Sách TVU. Được phát triển bởi thành viên của DA21TTA.
             </div>
         </footer>
     );

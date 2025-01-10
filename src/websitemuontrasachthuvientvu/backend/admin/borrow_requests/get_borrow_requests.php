@@ -6,7 +6,6 @@ require_once '../../db_config.php';
 
 $response = ["status" => "error", "requests" => []];
 
-// Câu lệnh SQL kết hợp bảng `borrow_requests`, `books`, và `users`
 $sql = "
     SELECT 
         br.id AS request_id, 

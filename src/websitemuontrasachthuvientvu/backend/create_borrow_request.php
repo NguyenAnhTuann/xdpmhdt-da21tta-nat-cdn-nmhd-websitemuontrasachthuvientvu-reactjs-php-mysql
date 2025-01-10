@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
 
     $user_id = $data['user_id'];
-    $borrow_list = $data['borrow_list']; // Danh sách sách mượn
+    $borrow_list = $data['borrow_list'];
     $return_date = $data['return_date'];
 
     if (!$user_id || !$borrow_list || !$return_date) {
@@ -16,12 +16,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // Chuẩn bị câu lệnh SQL thêm cột quantity
     $stmt = $conn->prepare("INSERT INTO borrow_requests (book_id, user_id, quantity, return_date, status) VALUES (?, ?, ?, ?, 'Chờ xử lý')");
 
     foreach ($borrow_list as $book) {
         $book_id = $book['id'];
-        $quantity = $book['quantity'] ?? 1; // Số lượng mặc định là 1 nếu không được gửi
+        $quantity = $book['quantity'] ?? 1;
         $stmt->bind_param("iiis", $book_id, $user_id, $quantity, $return_date);
         $stmt->execute();
     }

@@ -28,16 +28,16 @@ const Register = () => {
         e.preventDefault();
         setIsLoading(true);
         setErrorMessage("");
-    
+
         try {
             const response = await fetch("http://localhost/websitemuontrasachthuvientvu/backend/register.php", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(formData),
             });
-    
+
             const data = await response.json();
-    
+
             setTimeout(() => {
                 if (data.message === "Đăng ký thành công") {
                     navigate("/login");
@@ -56,10 +56,18 @@ const Register = () => {
             setIsLoading(false);
         }
     };
-    
+
 
     return (
-        <div className="relative min-h-screen bg-gradient-to-tr from-green-400 via-teal-500 to-blue-500 flex items-center justify-center p-6">
+        <div
+            className="relative min-h-screen flex items-center justify-center p-6"
+            style={{
+                backgroundImage: `url('https://res.cloudinary.com/duk8odqun/image/upload/v1735644020/Logotimdothatlac_1_qdrlei.png')`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+            }}
+        >
             {/* Loading Overlay */}
             {isLoading && (
                 <div className="fixed inset-0 bg-black bg-opacity-75 flex flex-col justify-center items-center z-50">
@@ -71,217 +79,220 @@ const Register = () => {
             )}
 
             {/* Card container */}
-            <div className="relative bg-white shadow-2xl rounded-3xl p-8 w-full max-w-lg z-10">
-                {/* Logo */}
-                <div className="flex justify-center mb-6">
-                    <div className="w-20 h-20 bg-gradient-to-br from-teal-500 to-green-500 rounded-full flex items-center justify-center shadow-lg">
-                        <FontAwesomeIcon icon={faUser} className="text-white text-4xl" />
-                    </div>
+            <div className="relative flex bg-white shadow-2xl rounded-3xl overflow-hidden w-full max-w-7xl">
+                <div className="w-1/2 hidden md:block">
+                    <img
+                        src="https://res.cloudinary.com/duk8odqun/image/upload/v1736451153/tthl_nucvkl.jpg"
+                        alt="Illustration"
+                        className="w-full h-full object-cover"
+                    />
                 </div>
-
-                {/* Heading */}
-                <h2 className="text-3xl font-bold text-gray-700 text-center mb-4">
-                    Đăng Ký Tài Khoản
-                </h2>
-                <p className="text-center text-gray-500 mb-6">
-                    Vui lòng điền đầy đủ thông tin của bạn
-                </p>
-
-                {/* Error message */}
-                {errorMessage && (
-                    <div className="mb-4 text-center text-red-500 font-medium animate-pulse">
-                        {errorMessage}
+                <div className="w-full md:w-1/2 p-8">
+                    {/* Logo */}
+                    <div className="flex justify-center mb-6">
+                        <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center shadow-lg">
+                            <FontAwesomeIcon icon={faUser} className="text-white text-4xl" />
+                        </div>
                     </div>
-                )}
+                    {/* Heading */}
+                    <h2 className="text-3xl font-bold text-gray-700 text-center mb-4">
+                        Đăng Ký Tài Khoản
+                    </h2>
+                    <p className="text-center text-gray-500 mb-6">
+                        Vui lòng điền đầy đủ thông tin của bạn
+                    </p>
 
-                {/* Form */}
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    {/* Name */}
-                    <div className="relative">
-                        <input
-                            type="text"
-                            name="name"
-                            placeholder="Họ và tên"
-                            value={formData.name}
-                            onChange={handleChange}
-                            className="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-green-400 focus:outline-none"
-                            required
-                        />
-                        <span className="absolute left-4 top-3 text-gray-500">
-                            👤
-                        </span>
-                    </div>
+                    {/* Error message */}
+                    {errorMessage && (
+                        <div className="mb-4 text-center text-red-500 font-medium animate-pulse">
+                            {errorMessage}
+                        </div>
+                    )}
 
-                    {/* Date */}
-                    <div className="relative">
-                        <input
-                            type="date"
-                            name="date"
-                            value={formData.date}
-                            onChange={handleChange}
-                            className="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-green-400 focus:outline-none"
-                            required
-                        />
-                        <span className="absolute left-4 top-3 text-gray-500">
-                            📅
-                        </span>
-                    </div>
+                    {/* Form */}
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        {/* Name */}
+                        <div className="relative">
+                            <input
+                                type="text"
+                                name="name"
+                                placeholder="Họ và tên"
+                                value={formData.name}
+                                onChange={handleChange}
+                                className="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-green-400 focus:outline-none"
+                                required
+                            />
+                            <span className="absolute left-4 top-3 text-gray-500">
+                                👤
+                            </span>
+                        </div>
 
-                    {/* Class */}
-                    <div className="relative">
-                        <input
-                            type="text"
-                            name="class"
-                            placeholder="Lớp"
-                            value={formData.class}
-                            onChange={handleChange}
-                            className="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-green-400 focus:outline-none"
-                            required
-                        />
-                        <span className="absolute left-4 top-3 text-gray-500">
-                            🏫
-                        </span>
-                    </div>
+                        {/* Date */}
+                        <div className="relative">
+                            <input
+                                type="date"
+                                name="date"
+                                value={formData.date}
+                                onChange={handleChange}
+                                className="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-green-400 focus:outline-none"
+                                required
+                            />
+                            <span className="absolute left-4 top-3 text-gray-500">
+                                📅
+                            </span>
+                        </div>
 
-                    {/* Major */}
-                    <div className="relative">
-                        <input
-                            type="text"
-                            name="major"
-                            placeholder="Ngành học"
-                            value={formData.major}
-                            onChange={handleChange}
-                            className="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-green-400 focus:outline-none"
-                            required
-                        />
-                        <span className="absolute left-4 top-3 text-gray-500">
-                            📚
-                        </span>
-                    </div>
-                    {/* Faculty */}
-                    <div className="relative">
-                        <input
-                            type="text"
-                            name="faculty"
-                            placeholder="Khoa"
-                            value={formData.faculty}
-                            onChange={handleChange}
-                            className="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-green-400 focus:outline-none"
-                            required
-                        />
-                        <span className="absolute left-4 top-3 text-gray-500">
-                            🏛️
-                        </span>
-                    </div>
+                        {/* Class */}
+                        <div className="relative">
+                            <input
+                                type="text"
+                                name="class"
+                                placeholder="Lớp"
+                                value={formData.class}
+                                onChange={handleChange}
+                                className="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-green-400 focus:outline-none"
+                                required
+                            />
+                            <span className="absolute left-4 top-3 text-gray-500">
+                                🏫
+                            </span>
+                        </div>
 
-                    {/* School */}
-                    <div className="relative">
-                        <input
-                            type="text"
-                            name="school"
-                            placeholder="Trường"
-                            value={formData.school}
-                            onChange={handleChange}
-                            className="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-green-400 focus:outline-none"
-                            required
-                        />
-                        <span className="absolute left-4 top-3 text-gray-500">
-                            🎓
-                        </span>
-                    </div>
+                        {/* Major */}
+                        <div className="relative">
+                            <input
+                                type="text"
+                                name="major"
+                                placeholder="Ngành học"
+                                value={formData.major}
+                                onChange={handleChange}
+                                className="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-green-400 focus:outline-none"
+                                required
+                            />
+                            <span className="absolute left-4 top-3 text-gray-500">
+                                📚
+                            </span>
+                        </div>
+                        {/* Faculty */}
+                        <div className="relative">
+                            <input
+                                type="text"
+                                name="faculty"
+                                placeholder="Khoa"
+                                value={formData.faculty}
+                                onChange={handleChange}
+                                className="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-green-400 focus:outline-none"
+                                required
+                            />
+                            <span className="absolute left-4 top-3 text-gray-500">
+                                🏛️
+                            </span>
+                        </div>
 
-                    {/* Phone */}
-                    <div className="relative">
-                        <input
-                            type="text"
-                            name="phone"
-                            placeholder="Số điện thoại"
-                            value={formData.phone}
-                            onChange={handleChange}
-                            className="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-green-400 focus:outline-none"
-                            required
-                        />
-                        <span className="absolute left-4 top-3 text-gray-500">
-                            📱
-                        </span>
-                    </div>
+                        {/* School */}
+                        <div className="relative">
+                            <input
+                                type="text"
+                                name="school"
+                                placeholder="Trường"
+                                value={formData.school}
+                                onChange={handleChange}
+                                className="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-green-400 focus:outline-none"
+                                required
+                            />
+                            <span className="absolute left-4 top-3 text-gray-500">
+                                🎓
+                            </span>
+                        </div>
 
-                    {/* Email */}
-                    <div className="relative">
-                        <input
-                            type="email"
-                            name="email"
-                            placeholder="Email"
-                            value={formData.email}
-                            onChange={handleChange}
-                            className="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-green-400 focus:outline-none"
-                            required
-                        />
-                        <span className="absolute left-4 top-3 text-gray-500">
-                            📧
-                        </span>
-                    </div>
+                        {/* Phone */}
+                        <div className="relative">
+                            <input
+                                type="text"
+                                name="phone"
+                                placeholder="Số điện thoại"
+                                value={formData.phone}
+                                onChange={handleChange}
+                                className="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-green-400 focus:outline-none"
+                                required
+                            />
+                            <span className="absolute left-4 top-3 text-gray-500">
+                                📱
+                            </span>
+                        </div>
 
-                    {/* Address */}
-                    <div className="relative">
-                        <input
-                            type="text"
-                            name="address"
-                            placeholder="Địa chỉ"
-                            value={formData.address}
-                            onChange={handleChange}
-                            className="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-green-400 focus:outline-none"
-                            required
-                        />
-                        <span className="absolute left-4 top-3 text-gray-500">
-                            🏠
-                        </span>
-                    </div>
+                        {/* Email */}
+                        <div className="relative">
+                            <input
+                                type="email"
+                                name="email"
+                                placeholder="Email"
+                                value={formData.email}
+                                onChange={handleChange}
+                                className="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-green-400 focus:outline-none"
+                                required
+                            />
+                            <span className="absolute left-4 top-3 text-gray-500">
+                                📧
+                            </span>
+                        </div>
 
-                    {/* Password */}
-                    <div className="relative">
-                        <input
-                            type="password"
-                            name="password"
-                            placeholder="Nhập mật khẩu"
-                            value={formData.password}
-                            onChange={handleChange}
-                            className="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-green-400 focus:outline-none"
-                            required
-                        />
-                        <span className="absolute left-4 top-3 text-gray-500">
-                            🔒
-                        </span>
-                    </div>
+                        {/* Address */}
+                        <div className="relative">
+                            <input
+                                type="text"
+                                name="address"
+                                placeholder="Địa chỉ"
+                                value={formData.address}
+                                onChange={handleChange}
+                                className="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-green-400 focus:outline-none"
+                                required
+                            />
+                            <span className="absolute left-4 top-3 text-gray-500">
+                                🏠
+                            </span>
+                        </div>
 
-                    {/* Submit Button */}
-                    <button
-                        type="submit"
-                        className="w-full py-3 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold rounded-lg hover:opacity-90 transition-all duration-300"
-                    >
-                        {isLoading ? "⏳ Đang xử lý..." : "🚀 Đăng Ký"}
-                    </button>
+                        {/* Password */}
+                        <div className="relative">
+                            <input
+                                type="password"
+                                name="password"
+                                placeholder="Nhập mật khẩu"
+                                value={formData.password}
+                                onChange={handleChange}
+                                className="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-green-400 focus:outline-none"
+                                required
+                            />
+                            <span className="absolute left-4 top-3 text-gray-500">
+                                🔒
+                            </span>
+                        </div>
 
-                    {/* Login */}
-                    <div className="mt-6 text-center text-gray-500">
-                        <p>
-                            Bạn đã có tài khoản?{" "}
-                            <button
-                                onClick={() => navigate("/login")}
-                                className="text-green-500 font-medium hover:underline"
-                            >
-                                Đăng nhập ngay
-                            </button>
-                        </p>
-                    </div>
-                </form>
+                        {/* Submit Button */}
+                        <button
+                            type="submit"
+                            className="w-full py-3 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold rounded-lg hover:opacity-90 transition-all duration-300"
+                        >
+                            {isLoading ? "⏳ Đang xử lý..." : "🚀 Đăng Ký"}
+                        </button>
+
+                        {/* Login */}
+                        <div className="mt-6 text-center text-gray-500">
+                            <p>
+                                Bạn đã có tài khoản?{" "}
+                                <button
+                                    onClick={() => navigate("/login")}
+                                    className="text-green-500 font-medium hover:underline"
+                                >
+                                    Đăng nhập ngay
+                                </button>
+                            </p>
+                        </div>
+                    </form>
+                </div>
             </div>
 
-            {/* Background Decorations */}
-            <div className="absolute inset-0 z-0 pointer-events-none">
-                <div className="absolute top-16 left-16 w-64 h-64 bg-green-400 rounded-full filter blur-3xl opacity-30"></div>
-                <div className="absolute bottom-16 right-16 w-64 h-64 bg-green-500 rounded-full filter blur-3xl opacity-30"></div>
-            </div>
         </div>
     );
 };

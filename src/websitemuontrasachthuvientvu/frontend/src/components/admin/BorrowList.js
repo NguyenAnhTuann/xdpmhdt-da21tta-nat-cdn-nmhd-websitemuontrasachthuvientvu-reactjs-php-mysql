@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { LuSaveAll } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 
 const BorrowList = () => {
     const [borrowList, setBorrowList] = useState([]);
@@ -9,6 +10,30 @@ const BorrowList = () => {
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
     const [notification, setNotification] = useState({ message: "", visible: false });
+    const [searchTerm, setSearchTerm] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10;
+    const totalAllBorrowRequests = borrowList.length;
+
+
+    const filteredBorrowList = borrowList.filter((item) =>
+        String(item.borrow_request_id).toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    const formatFineFee = (fee) => {
+        if (fee === null || fee === undefined) return "N/A";
+        return new Intl.NumberFormat("vi-VN").format(fee);
+    };
+
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = filteredBorrowList.slice(indexOfFirstItem, indexOfLastItem);
+    const totalPages = Math.ceil(filteredBorrowList.length / itemsPerPage);
+
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
+
 
     const showNotification = (message) => {
         setNotification({ message, visible: true });
@@ -58,7 +83,7 @@ const BorrowList = () => {
             setBorrowList((prevList) =>
                 prevList.map((item) => {
                     if (item.status_user !== "Chờ nhận sách" || !item.approved_at) {
-                        return { ...item, timeRemaining: null, isDisabled: item.status_user !== "Chờ nhận sách" };
+                        return { ...item, timeRemaining: null, isDisabled: false };
                     }
 
                     const approvedTime = new Date(item.approved_at);
@@ -69,7 +94,7 @@ const BorrowList = () => {
                     return {
                         ...item,
                         timeRemaining,
-                        isDisabled: timeRemaining === 0,
+                        isDisabled: timeRemaining === 0 && item.status_user === "Chờ nhận sách",
                     };
                 })
             );
@@ -77,6 +102,7 @@ const BorrowList = () => {
 
         return () => clearInterval(interval);
     }, []);
+
 
 
 
@@ -112,7 +138,7 @@ const BorrowList = () => {
     }
 
     return (
-        <div className="p-8 bg-gray-100 min-h-screen">
+        <div className="container mx-auto px-8 min-h-screen">
             {notification.visible && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                     <div className="bg-white rounded-xl shadow-xl w-[28rem] max-w-full">
@@ -143,12 +169,9 @@ const BorrowList = () => {
                     </div>
                 </div>
             )}
-            <div className="relative bg-gradient-to-r from-gray-100 to-white p-10 rounded-xl shadow-2xl">
-                <h2 className="text-center text-6xl font-extrabold text-gray-800 tracking-wider uppercase mb-4">
-                    Quản Lý trạng thái đơn mượn
-                </h2>
-                <div className="w-40 h-2 bg-black mx-auto rounded-full"></div>
-                <div className="absolute top-4 left-4">
+            <div className="mt-4">
+                {/* Nút quay lại */}
+                <div className="flex justify-start mb-4">
                     <button
                         onClick={() => navigate("/admin")}
                         className="flex items-center bg-blue-600 text-white px-6 py-3 rounded-full shadow-lg hover:bg-blue-700 hover:shadow-xl transition-transform transform hover:scale-105 text-lg font-medium"
@@ -171,6 +194,32 @@ const BorrowList = () => {
                     </button>
                 </div>
             </div>
+            <div className="relative p-10 rounded-xl mt-4 mb-8 border-2">
+                <h2 className="text-center text-6xl font-extrabold text-gray-800 tracking-wider uppercase mb-4">
+                    Quản Lý trạng thái đơn mượn
+                </h2>
+            </div>
+            <div className="mb-6 flex flex-wrap gap-6 items-center">
+                <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder="🔍 Tìm kiếm theo ID đơn mượn..."
+                    className="w-[400px] px-4 py-2 border rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 placeholder-gray-400 transition-all duration-300"
+                />
+                <button
+                    onClick={() => setSearchTerm("")}
+                    className="bg-gradient-to-r from-red-500 to-red-700 text-white px-6 py-3 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300"
+                >
+                    🔄 Đặt lại
+                </button>
+            </div>
+            <div className="mb-6 flex justify-between items-center">
+                <div className="text-lg font-bold text-gray-800">
+                    <span>Tổng số đơn mượn: {totalAllBorrowRequests}</span>
+                </div>
+            </div>
+
             <div className="overflow-x-auto mt-6 bg-white shadow-lg rounded-lg p-4">
                 <table className="w-full border-collapse border border-gray-200">
                     <thead className="bg-gradient-to-r from-blue-600 to-blue-400 text-white">
@@ -186,7 +235,7 @@ const BorrowList = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {borrowList.map((item, index) => (
+                        {currentItems.map((item, index) => (
                             <tr
                                 key={item.id}
                                 className={`transition-colors ${index % 2 === 0 ? "bg-gray-50" : "bg-white"} hover:bg-blue-50`}
@@ -215,7 +264,7 @@ const BorrowList = () => {
                                             {item.timeRemaining !== null
                                                 ? item.timeRemaining > 0
                                                     ? formatTime(item.timeRemaining)
-                                                    : "Hết thời gian"
+                                                    : "Quá hạn mượn sách"
                                                 : ""}
                                         </div>
                                     </div>
@@ -224,7 +273,7 @@ const BorrowList = () => {
 
                                 <td className="px-6 py-3 border-r border-gray-200 text-center">
                                     <select
-                                        value={item.book_condition_id || ""}
+                                        value={item.fine_fee_id ? formatFineFee(item.fine_fee_id) + " VND" : "N/A"}
                                         onChange={(e) => {
                                             item.book_condition_id = e.target.value;
                                             setBorrowList([...borrowList]);
@@ -262,12 +311,12 @@ const BorrowList = () => {
                                 </td>
                                 <td className="px-6 py-3 border-r border-gray-200 flex justify-center items-center space-x-2">
                                     <button
-                                        className="flex items-center px-4 py-2 text-sm font-medium bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+                                        className="flex items-center gap-2 bg-white text-black border border-gray-300 hover:bg-gray-200 py-2 px-4 rounded-3xl shadow-sm"
                                         onClick={() =>
                                             handleSave(item.id, item.status_user, item.book_condition_id, item.fine_fee_id)
                                         }
                                     >
-                                        <FontAwesomeIcon icon="save" className="mr-2 text-white" />
+                                        <LuSaveAll icon="save" className="text-black" />
                                         Lưu
                                     </button>
                                 </td>
@@ -275,6 +324,19 @@ const BorrowList = () => {
                         ))}
                     </tbody>
                 </table>
+                <div className="mt-8 flex justify-center items-center space-x-2">
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                        <button
+                            key={page}
+                            onClick={() => handlePageChange(page)}
+                            className={`px-4 py-2 rounded ${page === currentPage ? "border-2 rounded-2xl bg-red-500 text-white" : " hover:bg-gray-200 border-2 rounded-2xl"
+                                }`}
+                        >
+                            {page}
+                        </button>
+                    ))}
+                </div>
+
             </div>
         </div>
     );

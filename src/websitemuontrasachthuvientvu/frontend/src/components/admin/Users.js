@@ -7,7 +7,22 @@ const Users = () => {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(false);
     const [notification, setNotification] = useState({ message: "", visible: false });
+    const [searchName, setSearchName] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+    const usersPerPage = 10;
 
+    const filteredUsers = users.filter((user) =>
+        user.name.toLowerCase().includes(searchName.toLowerCase())
+    );
+
+    const indexOfLastUser = currentPage * usersPerPage;
+    const indexOfFirstUser = indexOfLastUser - usersPerPage;
+    const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
+    const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
+
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
 
     const [formData, setFormData] = useState({
         name: "",
@@ -168,8 +183,7 @@ const Users = () => {
     if (users.length === 0) return <p className="text-center text-gray-500">No users found.</p>;
 
     return (
-
-        <div className="p-4 bg-gray-50 min-h-screen">
+        <div className="container mx-auto px-8 min-h-screen">
             {notification.visible && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                     <div className="bg-white rounded-xl shadow-xl w-[28rem] max-w-full">
@@ -205,20 +219,9 @@ const Users = () => {
                     </div>
                 </div>
             )}
-
-
-
-
-            <div className="relative bg-gradient-to-r from-gray-100 to-white p-10 rounded-xl shadow-2xl">
-                {/* Tiêu đề */}
-                <h2 className="text-center text-6xl font-extrabold text-gray-800 tracking-wider uppercase mb-4">
-                    Quản Lý Thông Tin Người Dùng
-                </h2>
-
-                {/* Đường viền dưới tiêu đề */}
-                <div className="w-40 h-2 bg-black mx-auto rounded-full"></div>
+            <div className="mt-4">
                 {/* Nút quay lại */}
-                <div className="absolute top-4 left-4">
+                <div className="flex justify-start mb-4">
                     <button
                         onClick={() => navigate("/admin")}
                         className="flex items-center bg-blue-600 text-white px-6 py-3 rounded-full shadow-lg hover:bg-blue-700 hover:shadow-xl transition-transform transform hover:scale-105 text-lg font-medium"
@@ -240,6 +243,12 @@ const Users = () => {
                         Trở về Trang Quản Trị
                     </button>
                 </div>
+            </div>
+            <div className="relative p-10 rounded-xl mt-4 mb-8 border-2">
+                {/* Tiêu đề */}
+                <h2 className="text-center text-6xl font-extrabold text-gray-800 tracking-wider uppercase">
+                    Quản Lý Thông Tin Người Dùng
+                </h2>
             </div>
 
             <div className="mb-8 p-8 bg-white shadow-2xl rounded-xl border border-gray-200">
@@ -382,7 +391,26 @@ const Users = () => {
                         Reset
                     </button>
                 </div>
+            </div>
 
+            <div className="mb-6 flex flex-wrap gap-6 items-center">
+                {/* Ô tìm kiếm */}
+                <input
+                    type="text"
+                    value={searchName}
+                    onChange={(e) => setSearchName(e.target.value)}
+                    placeholder="🔍 Tìm kiếm theo tên người dùng..."
+                    className="w-[400px] px-4 py-2 border rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 placeholder-gray-400 transition-all duration-300"
+                />
+                {/* Nút đặt lại */}
+                <button
+                    onClick={() => {
+                        setSearchName("");
+                    }}
+                    className="bg-gradient-to-r from-red-500 to-red-700 text-white px-6 py-3 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300"
+                >
+                    🔄 Đặt lại
+                </button>
             </div>
 
 
@@ -402,6 +430,8 @@ const Users = () => {
                                 "Số điện thoại",
                                 "Email",
                                 "Địa chỉ",
+                                "OTP",
+                                "Thời gian hết hạn OTP",
                                 "Thao tác",
                             ].map((header, index) => (
                                 <th
@@ -416,39 +446,27 @@ const Users = () => {
 
                     {/* Body */}
                     <tbody>
-                        {users.map((user, index) => (
+                        {currentUsers.map((user, index) => (
                             <tr
                                 key={user.id}
-                                className={`transition-colors ${index % 2 === 0 ? "bg-gray-50" : "bg-white"
-                                    } hover:bg-blue-50`}
+                                className={`transition-colors ${index % 2 === 0 ? "bg-gray-50" : "bg-white"} hover:bg-blue-50`}
                             >
                                 <td className="px-6 py-3 border-r border-gray-200">{user.id}</td>
-                                <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">
-                                    {user.name}
-                                </td>
-                                <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">
-                                    {user.date}
-                                </td>
+                                <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">{user.name}</td>
+                                <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">{user.date}</td>
                                 <td className="px-6 py-3 border-r border-gray-200">{user.class}</td>
-                                <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">
-                                    {user.major}
-                                </td>
-                                <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">
-                                    {user.faculty}
-                                </td>
-                                <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">
-                                    {user.school}
-                                </td>
+                                <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">{user.major}</td>
+                                <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">{user.faculty}</td>
+                                <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">{user.school}</td>
                                 <td className="px-6 py-3 border-r border-gray-200">{user.phone}</td>
                                 <td className="px-6 py-3 border-r border-gray-200">{user.email}</td>
-                                <td className="px-6 py-3 border-r border-gray-200 break-words max-w-lg">
-                                    {user.address}
-                                </td>
+                                <td className="px-6 py-3 border-r border-gray-200 break-words " style={{ minWidth: '300px' }}>{user.address}</td>
+                                <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200 break-words " style={{ minWidth: '150px' }}>{user.otp || "Không có OTP"}</td>
+                                <td className="px-6 py-3 border-r border-gray-200 break-words " style={{ minWidth: '200px' }}>{user.otp_expiry || "Không có OTP"}</td>
                                 <td className="px-6 py-3 border-r border-gray-200 flex space-x-2">
                                     {/* Nút Sửa */}
                                     <button
                                         onClick={() => {
-                                            // Loại bỏ `otp` và `otp_expiry` khỏi đối tượng `user`
                                             const { otp, otp_expiry, ...rest } = user;
                                             setFormData(rest);
                                         }}
@@ -466,11 +484,23 @@ const Users = () => {
                                         Xóa
                                     </button>
                                 </td>
-
                             </tr>
                         ))}
                     </tbody>
+
                 </table>
+                <div className="mt-8 flex justify-center items-center space-x-2">
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                        <button
+                            key={page}
+                            onClick={() => handlePageChange(page)}
+                            className={`px-4 py-2 rounded ${page === currentPage ? "bg-blue-500 text-white" : "bg-gray-300 hover:bg-gray-400"
+                                }`}
+                        >
+                            {page}
+                        </button>
+                    ))}
+                </div>
             </div>
 
 

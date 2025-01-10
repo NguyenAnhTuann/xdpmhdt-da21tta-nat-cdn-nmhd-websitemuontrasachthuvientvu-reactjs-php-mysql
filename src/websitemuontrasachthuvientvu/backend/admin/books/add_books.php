@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $requiredFields = ['title', 'author', 'publisher_id', 'publication_date', 'category_id', 'language', 'pages', 'available_quantity', 'description', 'image'];
     foreach ($requiredFields as $field) {
         if (empty($data[$field])) {
-            echo json_encode(["success" => false, "message" => "Field '$field' is required"]);
+            echo json_encode(["success" => false, "message" => "Nhập thiếu trường '$field' , vui lòng kiểm tra lại!"]);
             exit;
         }
     }
@@ -31,6 +31,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $available_quantity = (int)$data['available_quantity'];
     $description = $conn->real_escape_string($data['description']);
     $image_url = $conn->real_escape_string($data['image']); // Nhận URL ảnh từ frontend
+
+    // Kiểm tra định dạng ngày
+    if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $publication_date)) {
+        echo json_encode(["success" => false, "message" => "Ngày xuất bản không hợp lệ. Định dạng cần là YYYY-MM-DD"]);
+        exit;
+    }
 
     // Thêm sách vào cơ sở dữ liệu
     $query = "INSERT INTO books (image, title, author, publisher_id, publication_date, category_id, language, pages, available_quantity, description) 

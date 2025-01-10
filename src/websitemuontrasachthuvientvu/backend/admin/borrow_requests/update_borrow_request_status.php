@@ -102,53 +102,62 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $mail->isHTML(true);
                         $mail->Subject = '🔊🔊🔊 THÔNG BÁO DUYỆT ĐƠN MƯỢN SÁCH 🔊🔊🔊';
                         $mail->Body = "
-                        <div style='font-family: \"Arial\", sans-serif; background-color: #f4f4f9; padding: 20px;'>
-                            <div style='max-width: 800px; margin: 0 auto; background: white; border-radius: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); overflow: hidden;'>
+                        <div style='font-family: Arial, sans-serif; background-color: #f8f9fc; padding: 20px;'>
+                            <div style='max-width: 800px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); overflow: hidden;'>
+                                
                                 <!-- Header -->
-                                <div style='background-color: #1d4ed8; padding: 20px; text-align: center; color: white;'>
-                                    <h1 style='font-size: 22px; font-weight: bold; margin: 0;'>📚 Xác Nhận Yêu Cầu Mượn Sách 📚</h1>
-                                    <p style='font-size: 14px; margin: 5px 0 0;'>Thư viện TVU</p>
+                                <div style='background-color: #1d4ed8; padding: 20px; text-align: center; color: #ffffff;'>
+                                    <h1 style='font-size: 24px; font-weight: bold; margin: 0;'>
+                                        📚 Xác Nhận Yêu Cầu Mượn Sách 📚
+                                    </h1>
+                                    <p style='font-size: 14px; margin-top: 5px;'>Thư viện TVU</p>
                                 </div>
-                        
+                                
                                 <!-- Nội dung chính -->
                                 <div style='padding: 20px;'>
-                                    <p style='font-size: 18px; color: #1f2937; font-weight: bold;'>Xin chào <span style='color: #2563eb;'>$name</span>,</p>
-                                    <p style='font-size: 16px; color: #4b5563;'>Đơn mượn sách của bạn đã được duyệt. Vui lòng đến thư viện để nhận sách. Dưới đây là thông tin chi tiết:</p>
-                        
+                                    <p style='font-size: 18px; font-weight: bold; color: #111827; margin: 0 0 10px;'>Xin chào <span style='color: #2563eb;'>$name</span>,</p>
+                                    <p style='font-size: 16px; color: #374151; margin: 0 0 20px;'>Đơn mượn sách của bạn đã được duyệt. Vui lòng đến thư viện để nhận sách. Sau 24 giờ kể từ khi nhận được thông báo này thì đơn mượn sẽ bị hủy vì quá hạn.</p>
+                                    <p style='font-size: 16px; color: #374151; margin: 0 0 20px;'>Thông tin chi tiết như sau:</p>
+                                    
                                     <!-- Thông tin sách -->
-                                    <div style='margin-top: 20px; border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden;'>
-                                        <div style='background-color: #f9fafb; padding: 10px; font-size: 16px; color: #111827; font-weight: bold; text-align: center;'>Thông Tin Sách Mượn</div>
-                                        <table style='width: 100%; border-collapse: collapse; text-align: center;'>
+                                    <div style='border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; margin-top: 20px;'>
+                                        <div style='background-color: #1d4ed8; color: white; padding: 12px; font-size: 16px; font-weight: bold; text-align: center;'>
+                                            Thông Tin Sách Mượn
+                                        </div>
+                                        <table style='width: 100%; border-collapse: collapse; margin: 0;'>
                                             <thead>
-                                                <tr style='background-color: #e5e7eb; text-align: center;'>
-                                                    <th style='padding: 12px; border: 1px solid #d1d5db;'>ID Đơn mượn</th>
-                                                    <th style='padding: 12px; border: 1px solid #d1d5db;'>ID Sách</th>
-                                                    <th style='padding: 12px; border: 1px solid #d1d5db;'>Hình ảnh</th>
-                                                    <th style='padding: 12px; border: 1px solid #d1d5db;'>Tên sách</th>
-                                                    <th style='padding: 12px; border: 1px solid #d1d5db;'>Tác giả</th>
-                                                    <th style='padding: 12px; border: 1px solid #d1d5db;'>Số lượng</th>
+                                                <tr style='background-color: #f3f4f6; text-align: center;'>
+                                                    <th style='padding: 12px; border: 1px solid #e5e7eb;'>ID Đơn mượn</th>
+                                                    <th style='padding: 12px; border: 1px solid #e5e7eb;'>ID Sách</th>
+                                                    <th style='padding: 12px; border: 1px solid #e5e7eb;'>Hình ảnh</th>
+                                                    <th style='padding: 12px; border: 1px solid #e5e7eb;'>Tên sách</th>
+                                                    <th style='padding: 12px; border: 1px solid #e5e7eb;'>Tác giả</th>
+                                                    <th style='padding: 12px; border: 1px solid #e5e7eb;'>Số lượng</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody style='text-align: center;'>
                                                 $booksInfo
                                             </tbody>
                                         </table>
                                     </div>
-                        
+                                    
                                     <!-- Lưu ý -->
-                                    <p style='font-size: 14px; color: #6b7280; margin-top: 20px;'>Nếu bạn có bất kỳ câu hỏi nào, vui lòng liên hệ đội ngũ hỗ trợ của chúng tôi.</p>
+                                    <div style='margin-top: 20px; padding: 15px; background-color: #f3f4f6; border-radius: 8px;'>
+                                        <p style='font-size: 14px; color: #4b5563; margin: 0;'>
+                                            📌 Nếu bạn có bất kỳ câu hỏi nào, vui lòng liên hệ đội ngũ hỗ trợ của chúng tôi qua email hoặc hotline. Chúng tôi luôn sẵn sàng hỗ trợ bạn.
+                                        </p>
+                                    </div>
                                 </div>
-                        
+                                
                                 <!-- Footer -->
                                 <div style='background-color: #f9fafb; text-align: center; padding: 15px; border-top: 1px solid #e5e7eb;'>
-                                    <p style='margin: 0; font-size: 12px; color: #6b7280;'>Copyright © 2024 Website Mượn Trả Sách Thư Viện TVU</p>
-                                    <p style='margin: 0; font-size: 12px; color: #6b7280;'>Được phát triển bởi Nguyễn Anh Tuấn - 110121123 - DA21TTA - TVU</p>
+                                    <p style='font-size: 12px; color: #6b7280; margin: 0;'>Copyright © 2024 Website Mượn Trả Sách tại Trung tâm học liệu - Phát triển dạy và học</p>
+                                    <p style='font-size: 12px; color: #6b7280; margin: 0;'>Được phát triển bởi Nguyễn Anh Tuấn - 110121123 - DA21TTA - TVU</p>
                                 </div>
                             </div>
                         </div>
                         ";
                         
-
                         $mail->send();
                     } catch (Exception $e) {
                         error_log("Không thể gửi email: " . $mail->ErrorInfo);

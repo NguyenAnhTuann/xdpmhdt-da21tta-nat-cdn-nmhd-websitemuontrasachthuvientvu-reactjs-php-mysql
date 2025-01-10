@@ -14,7 +14,6 @@ import { Bar, Pie, Line } from "react-chartjs-2";
 import { FaUsers, FaBook, FaChartLine } from "react-icons/fa";
 import axios from "axios";
 
-// Đăng ký các thành phần cần thiết
 ChartJS.register(
     BarElement,
     ArcElement,
@@ -27,6 +26,11 @@ ChartJS.register(
 );
 
 const Dashboard = () => {
+    window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth'
+      });
     const [statistics, setStatistics] = useState({
         topUsers: [],
         topBooks: [],
@@ -34,17 +38,15 @@ const Dashboard = () => {
     });
 
     useEffect(() => {
-        // Gọi API để lấy dữ liệu thống kê
         axios
             .get("http://localhost/websitemuontrasachthuvientvu/backend/get_statistics.php")
             .then((response) => {
                 setStatistics(response.data);
-                console.log("API Response:", response.data); // Kiểm tra dữ liệu trả về
+                console.log("API Response:", response.data);
             })
             .catch((error) => console.error("Error fetching statistics:", error));
     }, []);
 
-    // Dữ liệu cho biểu đồ cột (Người dùng mượn sách nhiều nhất tháng)
     const topUsersData = {
         labels: statistics.topUsers.map((user) => user.name),
         datasets: [
@@ -77,7 +79,6 @@ const Dashboard = () => {
         }
     };
 
-    // Dữ liệu cho biểu đồ tròn (Sách được mượn nhiều nhất tháng)
     const topBooksData = {
         labels: statistics.topBooks.map((book) => book.title),
         datasets: [
@@ -95,12 +96,11 @@ const Dashboard = () => {
         ]
     };
 
-    // Dữ liệu cho biểu đồ đường (Loại sách có nhiều sách nhất tháng)
     const topCategoriesData = {
         labels: statistics.topCategories.map((category) => category.name),
         datasets: [
             {
-                label: "Số lượng sách có sẵn trong tháng",
+                label: "Số lượng sách của thể loại",
                 data: statistics.topCategories.map((category) => category.total_quantity),
                 borderColor: "rgba(75, 192, 192, 1)",
                 backgroundColor: "rgba(75, 192, 192, 0.5)",
@@ -150,7 +150,7 @@ const Dashboard = () => {
                 <div className="flex items-center mb-4">
                     <FaChartLine className="text-purple-500 text-2xl mr-2" />
                     <h2 className="text-xl font-semibold text-gray-800">
-                        Loại sách có nhiều sách nhất trong tháng
+                        Loại sách có nhiều sách nhất trong thư viện
                     </h2>
                 </div>
                 <div className="chart-container h-[300px] w-full">
